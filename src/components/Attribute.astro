@@ -1,0 +1,104 @@
+---
+const {
+  type = ''
+} = Astro.props
+---
+
+<span class="attribute-${type}" data-type={type}>
+  <img src="/icon-${type}.svg" alt="">
+</span>
+
+<style lang="scss" is:global>
+  @use '../assets/scss/base/breakpoint' as *;
+
+  span[class*="attribute-"] {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--small-badge-outer);
+    height: var(--small-badge-outer);
+    border-radius: 100%;
+    transition: 0.2s ease-in-out;
+
+    @include breakpoint(700) {
+      width: var(--large-badge-outer);
+      height: var(--large-badge-outer);
+    }
+
+    img {
+      position: relative;
+      z-index: 2;
+      width: 35%;
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      border-radius: 100%;
+
+      &:hover {
+        background-color: purple;
+      }
+    }
+
+    &::before {
+      z-index: 2;
+      width: var(--small-badge-inner);
+      height: var(--small-badge-inner);
+      background-color: #e0e0e0;
+      box-shadow: inset 0 6px 2px rgba(0, 0, 0, 0.15);
+
+      @include breakpoint(700) {
+        width: var(--large-badge-inner);
+        height: var(--large-badge-inner);
+      }
+    }
+
+    &::after {
+      z-index: 1;
+      width: var(--small-badge-outer);
+      height: var(--small-badge-outer);
+
+      @include breakpoint(700) {
+        width: var(--large-badge-outer);
+        height: var(--large-badge-outer);
+      }
+    }
+
+    &[class*="scissors"] {
+      &::after {
+        background: linear-gradient(#ec9e0e, #eca922);
+        box-shadow: inset 0 -5px 0 #c16a1b;
+      }
+    }
+
+    &[class*="paper"] {
+      &::after {
+        background: linear-gradient(hsl(230, 89%, 62%), hsl(230, 89%, 65%));
+        box-shadow: inset 0 -5px 0 #2b44c3;
+      }
+    }
+
+    &[class*="rock"] {
+      &::after {
+        background: linear-gradient(hsl(349, 71%, 52%), hsl(349, 70%, 56%));
+        box-shadow: inset 0 -5px 0 #9c1732;
+      }
+    }
+
+    &[class*="lizard"] {
+      &::after {
+        background: linear-gradient(hsl(261, 73%, 60%), hsl(261, 72%, 63%));
+        box-shadow: inset 0 -5px 0 #5e33a7;
+      }
+    }
+
+    &[class*="spock"] {
+      &::after {
+        background: linear-gradient(hsl(189, 59%, 53%), hsl(189, 58%, 57%));
+        box-shadow: inset 0 -5px 0 #2c8ba8;
+      }
+    }
+ }
+</style>
