@@ -1,4 +1,70 @@
-<header class="w-screen p-12 bg-indigo-200">
-  Logo
-  Score
+<header class="space-12 radius-large">
+  <div class="logo">
+    <img src="/logo-bonus.svg" alt="Rock, Paper, Scissors, Lizard, Spock game">
+  </div>
+  <div class="score elevation-200 radius-small">
+    <span>Score</span>
+    <span>&nbsp;<span>
+  </div>
 </header>
+
+<style lang="scss">
+  @use '../assets/scss/base/breakpoint' as *;
+  @use '../assets/scss/base/size' as *;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 2rem 8rem;
+    border: 3px solid hsl(217, 16%, 45%);
+
+    @include breakpoint(700) {
+      min-width: 700px;
+      margin: 2rem auto 8rem;
+    }
+  }
+
+  .logo {
+    img {
+      width: 50%;
+
+      @include breakpoint(700) {
+        width: 80%;
+      }
+    }
+  }
+
+  .score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 1.35rem;
+    background-color: var(--neutral-100);
+
+    @include breakpoint(1000) {
+      padding: 1rem 2rem;
+    }
+
+    span:first-child {
+      color: hsl(229, 64%, 46%);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+
+      @include breakpoint(1000) {
+        font-size: 1rem;
+      }
+    }
+
+    span:last-child {
+      color: hsl(229, 25%, 31%);
+      font-size: 2.5rem;
+      font-weight: 700;
+
+      @include breakpoint(1000) {
+        font-size: 3.5rem;
+      }
+    }
+  }
+</style>
