@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="astro-O664ZTCV">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- open graph -->
+    <meta property="og:title" content="Accessible Astro Starter">
+    <meta property="og:description" content="A starter project with accessible features using Astro static site builder. Contains accessible landmarks, skip links, a dark mode color scheme, better focus outline and keyboard menu navigation.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://starter.accessible-astro.dev">
+    <meta property="og:image" content="/social-preview-image.png">
+
+    <!-- page title -->
+    <title>Home - Accessible Astro Starter</title>
+  <link rel="stylesheet" href="/assets/asset.75d871bf.css"></link><script type="module" src="/entry.e3ac189d.js"></script>
+</head>
+  <body>
+    <header class="space-12 radius-large astro-C2KDKUQX">
+  <div class="logo astro-C2KDKUQX">
+    <img src="/logo-bonus.svg" alt="Rock, Paper, Scissors, Lizard, Spock game" class="astro-C2KDKUQX">
+  </div>
+  <div class="score elevation-200 radius-small astro-C2KDKUQX">
+    <span class="astro-C2KDKUQX">Score</span>
+    <span class="astro-C2KDKUQX">&nbsp;<span class="astro-C2KDKUQX">
+  </span></span></div>
+</header>
+
+
+
+    <main id="main-content" class="astro-O664ZTCV">
+      <div class="container astro-OMCVHAD6">
+    <h1 class="sr-only astro-OMCVHAD6" tabindex="-1">Play a game of Rock, Paper, Scissors, Lizard, Spock</h1>
+    <div class="choose-attribute visible astro-OMCVHAD6">
+      <ul class="animate astro-OMCVHAD6">
+        <li class="astro-OMCVHAD6">
+          <button class="astro-OMCVHAD6">
+            <span class="sr-only astro-OMCVHAD6">Choose Scissors</span>
+            <span class="attribute-scissors" data-type="scissors">
+  <img src="/icon-scissors.svg" alt="">
+</span>
+
+
+
+          </button>
+        </li>
+        <li class="astro-OMCVHAD6">
+          <button class="astro-OMCVHAD6">
+            <span class="sr-only astro-OMCVHAD6">Choose Paper</span>
+            <span class="attribute-paper" data-type="paper">
+  <img src="/icon-paper.svg" alt="">
+</span>
+
+
+
+          </button>
+        </li>
+        <li class="astro-OMCVHAD6">
+          <button class="astro-OMCVHAD6">
+            <span class="sr-only astro-OMCVHAD6">Choose Rock</span>
+            <span class="attribute-rock" data-type="rock">
+  <img src="/icon-rock.svg" alt="">
+</span>
+
+
+
+          </button>
+        </li>
+        <li class="astro-OMCVHAD6">
+          <button class="astro-OMCVHAD6">
+            <span class="sr-only astro-OMCVHAD6">Choose Lizard</span>
+            <span class="attribute-lizard" data-type="lizard">
+  <img src="/icon-lizard.svg" alt="">
+</span>
+
+
+
+          </button>
+        </li>
+        <li class="astro-OMCVHAD6">
+          <button class="astro-OMCVHAD6">
+            <span class="sr-only astro-OMCVHAD6">Choose Spock</span>
+            <span class="attribute-spock" data-type="spock">
+  <img src="/icon-spock.svg" alt="">
+</span>
+
+
+
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="game-results hidden astro-OMCVHAD6">
+      <div class="game-results__player astro-OMCVHAD6">
+        <div class="player__choice astro-OMCVHAD6"></div>
+        <p class="astro-OMCVHAD6">You picked <span class="sr-only astro-OMCVHAD6">scissors</span></p> 
+      </div> 
+      <div class="game-results__computer astro-OMCVHAD6">
+        <div class="computer__choice astro-OMCVHAD6"></div>
+        <p class="astro-OMCVHAD6">The house picked <span class="sr-only astro-OMCVHAD6">scissors</span></p> 
+      </div>
+      <div class="game-results__conclusion astro-OMCVHAD6">
+        <p class="size-48 astro-OMCVHAD6" data-animation="blink">You win</p>
+        <button id="play-again" class="user-action astro-OMCVHAD6">Play again</button>
+      </div>
+    </div>
+    <div class="button-group astro-OMCVHAD6">
+      <button id="rules" class="user-action astro-OMCVHAD6">Rules</button>
+      <button id="reset" class="user-action astro-OMCVHAD6">Reset score</button>
+    </div>
+    <div class="modal" role="dialog" aria-labelledby="rules">
+  <div class="modal__inner">
+    <div class="modal__content">
+      <h3 tabindex="-1">
+        Rules
+      </h3>
+      <img src="/image-rules-bonus.svg" alt="Rules of the game: Scissors beats Paper, Paper beats Rock, Rock beats Lizard, Lizard Beats Spock, Spock beats Scissors, Scissors beats Lizard, Lizard beats Paper, Paper beats Spock, Spock beats Rock and Rock beats Scissors" class="astro-OMCVHAD6">
+      <button id="close" aria-label="Close rules">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path fill="#3B4262" fill-rule="evenodd" d="M16.97 0l2.122 2.121-7.425 7.425 7.425 7.425-2.121 2.12-7.425-7.424-7.425 7.425L0 16.97l7.425-7.425L0 2.121 2.121 0l7.425 7.425L16.971 0z" opacity=".25"></path></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  // variables
+  const body = document.querySelector('body')
+  const modal = document.querySelector('.modal')
+  const modalId = modal.getAttribute('aria-labelledby')
+  const modalCloseButton = modal.querySelector('button#close')
+  const modalTrigger = document.querySelector(`#${modalId}`)
+  
+  // functions
+  const teleportToRoot = element => {
+    element.remove()
+    body.appendChild(element)
+  }
+
+  const getKeyboardFocusableElements = element => {
+    return [...element.querySelectorAll(
+      'a, button, input, textarea, select, details,[tabindex]:not([tabindex="-1"])'
+    )]
+      .filter(el => !el.hasAttribute('disabled'))
+  }
+
+  const trapFocus = event => {
+    const focusables = getKeyboardFocusableElements(modal)
+    const firstFocusable = focusables[0]
+    const lastFocusable = focusables[focusables.length - 1]
+
+    if (document.activeElement === lastFocusable && event.key === 'Tab' && !event.shiftKey) {
+      event.preventDefault()
+      firstFocusable.focus()
+    }
+
+    if (document.activeElement === firstFocusable && event.key === 'Tab' && event.shiftKey) {
+      event.preventDefault()
+      lastFocusable.focus()
+    }
+  }
+
+  const openModal = _ => {
+    const modalTitle = modal.querySelector('h3')
+
+    modal.classList.add('show')
+    body.classList.add('modal-is-active')
+    modalTitle.focus()
+    document.addEventListener('keydown', trapFocus)
+
+    modal.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeModal()
+      }
+    })
+  }
+
+  const closeModal = _ => {
+    modal.classList.remove('show')
+    body.classList.remove('modal-is-active')
+    modalTrigger.focus()
+    document.removeEventListener('keydown', trapFocus)
+  }
+
+  // execution
+  teleportToRoot(modal)
+
+  modalTrigger.addEventListener('click', openModal)
+
+  modalCloseButton.addEventListener('click', closeModal)
+
+  modal.addEventListener('click', event => { 
+    if (!event.target.closest('.modal__content')) {
+      closeModal()
+    }
+  })
+
+  window.closeModal = closeModal
+</script>
+
+
+
+    <div class="modal" role="dialog" aria-labelledby="reset">
+  <div class="modal__inner">
+    <div class="modal__content">
+      <h3 tabindex="-1">
+        Reset score
+      </h3>
+      <p class="astro-OMCVHAD6">Your score is saved, even when you close this website and come back later! Are you sure you want to reset your score? This cannot be undone 😲</p><div class="button-group astro-OMCVHAD6">
+        <button onclick="closeModal()" class="astro-OMCVHAD6">I changed my mind</button>
+        <button id="reset-game" class="astro-OMCVHAD6">Do it!</button>
+      </div>
+      <button id="close" aria-label="Close rules">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path fill="#3B4262" fill-rule="evenodd" d="M16.97 0l2.122 2.121-7.425 7.425 7.425 7.425-2.121 2.12-7.425-7.424-7.425 7.425L0 16.97l7.425-7.425L0 2.121 2.121 0l7.425 7.425L16.971 0z" opacity=".25"></path></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  // variables
+  const body = document.querySelector('body')
+  const modal = document.querySelector('.modal')
+  const modalId = modal.getAttribute('aria-labelledby')
+  const modalCloseButton = modal.querySelector('button#close')
+  const modalTrigger = document.querySelector(`#${modalId}`)
+  
+  // functions
+  const teleportToRoot = element => {
+    element.remove()
+    body.appendChild(element)
+  }
+
+  const getKeyboardFocusableElements = element => {
+    return [...element.querySelectorAll(
+      'a, button, input, textarea, select, details,[tabindex]:not([tabindex="-1"])'
+    )]
+      .filter(el => !el.hasAttribute('disabled'))
+  }
+
+  const trapFocus = event => {
+    const focusables = getKeyboardFocusableElements(modal)
+    const firstFocusable = focusables[0]
+    const lastFocusable = focusables[focusables.length - 1]
+
+    if (document.activeElement === lastFocusable && event.key === 'Tab' && !event.shiftKey) {
+      event.preventDefault()
+      firstFocusable.focus()
+    }
+
+    if (document.activeElement === firstFocusable && event.key === 'Tab' && event.shiftKey) {
+      event.preventDefault()
+      lastFocusable.focus()
+    }
+  }
+
+  const openModal = _ => {
+    const modalTitle = modal.querySelector('h3')
+
+    modal.classList.add('show')
+    body.classList.add('modal-is-active')
+    modalTitle.focus()
+    document.addEventListener('keydown', trapFocus)
+
+    modal.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        closeModal()
+      }
+    })
+  }
+
+  const closeModal = _ => {
+    modal.classList.remove('show')
+    body.classList.remove('modal-is-active')
+    modalTrigger.focus()
+    document.removeEventListener('keydown', trapFocus)
+  }
+
+  // execution
+  teleportToRoot(modal)
+
+  modalTrigger.addEventListener('click', openModal)
+
+  modalCloseButton.addEventListener('click', closeModal)
+
+  modal.addEventListener('click', event => { 
+    if (!event.target.closest('.modal__content')) {
+      closeModal()
+    }
+  })
+
+  window.closeModal = closeModal
+</script>
+
+
+
+  </div>
+    </main>
+    <footer class="attribution astro-KIBIVRXP">
+  Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank" class="astro-KIBIVRXP">Frontend Mentor</a>. 
+  Coded by <a href="https://markteekman.nl" class="astro-KIBIVRXP">Mark Teekman</a>.
+</footer>
+
+
+  
+</body></html>
+
+
+
+
