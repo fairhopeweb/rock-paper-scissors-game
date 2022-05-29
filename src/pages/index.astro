@@ -1,7 +1,560 @@
 ---
 import DefaultLayout from '../layouts/DefaultLayout.astro'
+import Attribute from '../components/Attribute.astro'
+import Modal from '../components/Modal.astro'
 ---
 
 <DefaultLayout title="Home">
-  Game
+  <div class="container">
+    <h1 class="sr-only" tabindex="-1">Play a game of Rock, Paper, Scissors, Lizard, Spock</h1>
+    <div class="choose-attribute visible">
+      <ul class="animate">
+        <li>
+          <button>
+            <span class="sr-only">Choose Scissors</span>
+            <Attribute type="scissors" />
+          </button>
+        </li>
+        <li>
+          <button>
+            <span class="sr-only">Choose Paper</span>
+            <Attribute type="paper" />
+          </button>
+        </li>
+        <li>
+          <button>
+            <span class="sr-only">Choose Rock</span>
+            <Attribute type="rock" />
+          </button>
+        </li>
+        <li>
+          <button>
+            <span class="sr-only">Choose Lizard</span>
+            <Attribute type="lizard" />
+          </button>
+        </li>
+        <li>
+          <button>
+            <span class="sr-only">Choose Spock</span>
+            <Attribute type="spock" />
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="game-results hidden">
+      <div class="game-results__player">
+        <div class="player__choice"></div>
+        <p>You picked <span class="sr-only">scissors</span></p> 
+      </div> 
+      <div class="game-results__computer">
+        <div class="computer__choice"></div>
+        <p>The house picked <span class="sr-only">scissors</span></p> 
+      </div>
+      <div class="game-results__conclusion">
+        <p class="size-48" data-animation="blink">You win</p>
+        <button id="play-again" class="user-action">Play again</button>
+      </div>
+    </div>
+    <div class="button-group">
+      <button id="rules" class="user-action">Rules</button>
+      <button id="reset" class="user-action">Reset score</button>
+    </div>
+    <Modal
+      triggerId="rules"
+      title="Rules"
+    >
+      <img src="/image-rules-bonus.svg" alt="Rules of the game: Scissors beats Paper, Paper beats Rock, Rock beats Lizard, Lizard Beats Spock, Spock beats Scissors, Scissors beats Lizard, Lizard beats Paper, Paper beats Spock, Spock beats Rock and Rock beats Scissors">
+    </Modal>
+    <Modal
+      triggerId="reset"
+      title="Reset score"
+    >
+      <p>Your score is saved, even when you close this website and come back later! Are you sure you want to reset your score? This cannot be undone 😲</p>
+      <div class="button-group">
+        <button onclick="closeModal()">I changed my mind</button>
+        <button id="reset-game">Do it!</button>
+      </div>
+    </Modal>
+  </div>
 </DefaultLayout>
+
+<script>
+  // variables
+  let score = localStorage.getItem('score')
+  const scoreDisplay = document.querySelector('.score span:last-child')
+  const chooseAttributeScreen = document.querySelector('.choose-attribute')
+  const gameSelection = document.querySelector('ul')
+  const allAttributes = [...gameSelection.querySelectorAll('span[class*="attribute-"]')]
+  const gameResultsScreen = document.querySelector('.game-results')
+  const playerChoiceDisplay = gameResultsScreen.querySelector('.player__choice')
+  const computerChoiceDisplay = gameResultsScreen.querySelector('.computer__choice')
+  const gameResultAnnouncement = gameResultsScreen.querySelector('.game-results__conclusion p')
+  const playAgainButton = document.getElementById('play-again')
+  const resetScoreButton = document.getElementById('reset-game')
+  const h1 = document.querySelector('h1')
+
+  // functions
+  const getRandomItem = items => Math.floor(Math.random() * items.length)
+  
+  const createAttribute = type => {
+    return `<span class="attribute-${type}" data-type="${type}">
+      <img src="/icon-${type}.svg" alt="">
+    </span>`
+  }
+
+  const resetGame = () => {
+    chooseAttributeScreen.classList.add('visible')
+    chooseAttributeScreen.classList.remove('hidden')
+    gameResultsScreen.classList.add('hidden')
+    gameResultsScreen.classList.remove('visible')
+
+    if (playerChoiceDisplay.classList.contains('winner')) {
+      playerChoiceDisplay.classList.remove('winner')
+    } else {
+      playerChoiceDisplay.classList.remove('loser')
+    }
+
+    if (computerChoiceDisplay.classList.contains('winner')) {
+      computerChoiceDisplay.classList.remove('winner')
+    } else {
+      computerChoiceDisplay.classList.remove('loser')
+    }
+
+    gameResultAnnouncement.parentElement.style.opacity = '0'
+    gameSelection.classList.add('animate')
+    h1.focus()
+  }
+
+  const playerWins = () => {
+    let currentScore = parseInt(localStorage.getItem('score'))
+    let newScore
+
+    playerChoiceDisplay.classList.add('winner')
+    computerChoiceDisplay.classList.add('loser')
+    gameResultAnnouncement.textContent = 'You win'
+    newScore = currentScore + 1
+    localStorage.setItem('score', `${newScore}`)
+    
+    setTimeout(() => {
+      scoreDisplay.innerHTML = localStorage.getItem('score')
+    }, 1500)
+  }
+
+  const computerWins = () => {
+    playerChoiceDisplay.classList.add('loser')
+    computerChoiceDisplay.classList.add('winner')
+    gameResultAnnouncement.textContent = 'You lose'
+  }
+
+  // execution
+  if (score === null) {
+    score = localStorage.setItem('score', 0)
+  }
+
+  scoreDisplay.innerHTML = localStorage.getItem('score')
+
+  gameSelection.addEventListener('click', event => {
+    if (!event.target.closest('button')) return
+
+    const currentTarget = event.target
+    const playersChoice = currentTarget.querySelector('span:last-child').getAttribute('data-type')
+    const computersChoice = allAttributes[getRandomItem(allAttributes)].getAttribute('data-type')
+
+    gameSelection.classList.remove('animate')
+
+    chooseAttributeScreen.classList.remove('visible')
+    chooseAttributeScreen.classList.add('hidden')
+    gameResultsScreen.classList.remove('hidden')
+    gameResultsScreen.classList.add('visible')
+  
+    if (playersChoice === 'scissors' && (computersChoice === 'paper' || computersChoice === 'lizard')) {
+      playerWins()
+    } else if (playersChoice === 'paper' && (computersChoice === 'rock' || computersChoice === 'spock')) {
+      playerWins()
+    } else if (playersChoice === 'rock' && (computersChoice === 'lizard' || computersChoice === 'scissors')) {
+      playerWins()
+    } else if (playersChoice === 'lizard' && (computersChoice === 'spock' || computersChoice === 'paper')) {
+      playerWins()
+    } else if (playersChoice === 'spock' && (computersChoice === 'scissors' || computersChoice === 'rock')) {
+      playerWins()
+    } else if (computersChoice === 'scissors' && (playersChoice === 'paper' || playersChoice === 'lizard')) {
+      computerWins()
+    } else if (computersChoice === 'paper' && (playersChoice === 'rock' || playersChoice === 'spock')) {
+      computerWins()
+    } else if (computersChoice === 'rock' && (playersChoice === 'lizard' || playersChoice === 'scissors')) {
+      computerWins()
+    } else if (computersChoice === 'lizard' && (playersChoice === 'spock' || playersChoice === 'paper')) {
+      computerWins()
+    } else if (computersChoice === 'spock' && (playersChoice === 'scissors' || playersChoice === 'rock')) {
+      computerWins()
+    } else if (playersChoice === computersChoice) {
+      gameResultAnnouncement.textContent = 'Nobody won'
+    }
+
+    playerChoiceDisplay.innerHTML = createAttribute(playersChoice)
+    computerChoiceDisplay.innerHTML = createAttribute(computersChoice)
+
+    setTimeout(() => { 
+      playerChoiceDisplay.firstElementChild.style.opacity = '1' 
+      playerChoiceDisplay.firstElementChild.style.transform = 'scale(1)' 
+    }, 500)
+
+    setTimeout(() => { 
+      computerChoiceDisplay.firstElementChild.style.opacity = '1'
+      computerChoiceDisplay.firstElementChild.style.transform = 'scale(1)'
+    }, 1000)
+
+    setTimeout(() => {
+      gameResultAnnouncement.parentElement.style.opacity = '1'
+    }, 1500)
+  })
+
+  playAgainButton.addEventListener('click', resetGame)
+
+  resetScoreButton.addEventListener('click', () => {
+    localStorage.setItem('score', 0)
+    scoreDisplay.innerHTML = localStorage.getItem('score')
+    closeModal()
+  })
+</script>
+
+<style lang="scss">
+  @use '../assets/scss/base/breakpoint' as *;
+  @use '../assets/scss/base/size' as *;
+  @use '../assets/scss/base/keyframes/fade-in' as *;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 2rem;
+  }
+
+  .hidden {
+    position: absolute;
+    visibility: hidden;
+    height: 0;
+    opacity: 0;
+  }
+
+  .visible {
+    position: relative;
+    visibility: visible;
+    height: auto;
+    opacity: 1;
+  }
+
+  .choose-attribute,
+  .game-results {
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .choose-attribute {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    background-image: url('/bg-pentagon.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+
+    @include breakpoint(700) {
+      background-size: 411px;
+    }
+
+    ul {
+      position: relative;
+      width: 329px;
+      height: 313px;
+
+      @include breakpoint(700) {
+        width: 411px;
+        height: 391px;
+      }
+
+      &.animate button {
+        opacity: 0;
+        animation: fade-in 0.5s ease-in-out forwards;
+      }
+
+      li {
+        position: absolute;
+        width: var(--small-badge-outer);
+
+        @include breakpoint(700) {
+          width: var(--large-badge-outer);
+          height: var(--large-badge-outer);
+        }
+      }
+
+      li:nth-child(1) {
+        inset: -40px 0 auto 0;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      li:nth-child(2) {
+        inset: 60px -30px auto auto;
+
+        button {
+          animation-delay: 0.15s;
+        }
+      }
+
+      li:nth-child(3) {
+        inset: 230px 10px auto auto;
+
+        button {
+          animation-delay: 0.3s;
+        }
+      }
+
+      li:nth-child(4) {
+        inset: 230px auto auto 10px;
+
+        button {
+          animation-delay: 0.45s;
+        }
+      }
+
+      li:nth-child(5) {
+        inset: 60px auto auto -30px;
+
+        button {
+          animation-delay: 0.6s;
+        }
+      }
+
+      @include breakpoint(700) {
+        li:nth-child(1) { inset: -60px 0 auto 0; }
+        li:nth-child(2) { inset: 80px -50px auto auto; }
+        li:nth-child(3) { inset: 300px 20px auto auto; }
+        li:nth-child(4) { inset: 300px auto auto 20px; }
+        li:nth-child(5) { inset: 80px auto auto -50px; }
+      }
+    }
+
+    button:hover,
+    button:focus {
+      :global(span:last-child) {
+        box-shadow: 
+          0 0 0 15px rgba(white, 0.07),
+          0 0 0 40px rgba(white, 0.04);
+        transform: translateY(-0.5rem);
+      }
+
+      :global(span::before) {
+        background-color: var(--neutral-100);
+      }
+    }
+  }
+
+  button {
+    padding: 0;
+    border: none;
+  }
+
+  .user-action {
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.15s ease-in-out;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      box-shadow: 
+        0 0 0 10px rgba(white, 0.07),
+        0 0 0 25px rgba(white, 0.04),
+    }
+  }
+
+  button#play-again {
+    padding: 1rem 4.5rem;
+    color: var(--neutral-700);
+    background-color: var(--neutral-100);
+    border: 2px solid transparent;
+
+    &:hover,
+    &:focus {
+      color: var(--neutral-100);
+      border: 2px solid var(--header-outline);
+      background-color: transparent;
+    }
+  }
+
+  button#rules,
+  button#reset {
+    padding: 0.75rem 2.5rem;
+    border: 2px solid var(--header-outline);
+
+    &:hover,
+    &:focus {
+      color: var(--dark-text);
+      background-color: var(--neutral-100);
+    }
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    @include breakpoint(700) {
+      align-self: end;
+    }
+  }
+
+  .game-results {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 100%;
+
+    @include breakpoint(700) {
+      flex-wrap: nowrap;
+
+      :first-child {
+        order: 0;
+      }
+
+      :nth-child(2):not(p) {
+        order: 2;
+      }
+    }
+  }
+
+  [class*="game-results__"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    @include breakpoint(700) {
+      p {
+        order: -1;
+      }
+    }
+
+    @include breakpoint(1000) {
+      p:not([class*="size-48"]) {
+        @include size-20;
+      }
+    }
+  }
+
+  [class*="__choice"] {
+    display: grid;
+    place-items: center;
+    width: var(--small-badge-outer);
+    height: var(--small-badge-outer);
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 100%;
+
+    :global(> *) {
+      opacity: 0;
+      transform: scale(2);
+      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+    @include breakpoint(700) {
+      width: var(--large-badge-outer);
+      height: var(--large-badge-outer);
+    }
+
+    @include breakpoint(1000) {
+      width: var(--huge-badge-outer);
+      height: var(--huge-badge-outer);
+
+      :global([class*="attribute"]) {
+        width: var(--huge-badge-outer);
+        height: var(--huge-badge-outer);
+
+        &:before {
+          width: var(--huge-badge-inner);
+          height: var(--huge-badge-inner);
+        }
+
+        &:after {
+          width: var(--huge-badge-outer);
+          height: var(--huge-badge-outer);
+        }
+      }
+    }
+  }
+
+  [class*="__conclusion"] {
+    flex: 0 1 100%;
+    margin-top: 5rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+
+    @include breakpoint(700) {
+      flex: auto;
+      order: 0;
+    }
+  }
+
+  .winner {
+    position: relative;
+    z-index: 1;
+    box-shadow: 
+      0 0 0 15px rgba(white, 0.07),
+      0 0 0 40px rgba(white, 0.04),
+      0 0 0 80px rgba(white, 0.02);
+    transition: box-shadow 1s ease-in-out;
+    transition-delay: 1s;
+
+    @include breakpoint(1000) {
+      box-shadow: 
+        0 0 0 40px rgba(white, 0.07),
+        0 0 0 80px rgba(white, 0.04),
+        0 0 0 130px rgba(white, 0.02); 
+    }
+  }
+
+  .loser {
+    position: relative;
+    z-index: 2;
+  }
+
+  p {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  :global(.modal__content p) {
+    font-weight: 600;
+    text-transform: none;
+    @include size-20;
+  }
+
+  :global(.modal__content button:not(#close)) {
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    color: var(--neutral-800);
+    background-color: var(--neutral-400);
+    transition: all 0.15s ease-in-out;
+    @include size-18;
+
+    &:hover,
+    &:focus {
+      color: var(--neutral-300);
+      background-color: var(--neutral-700);
+      text-decoration: underline;
+    }
+
+    &:last-child {
+      color: var(--neutral-100);
+      background-color: var(--error-600);
+
+      &:hover,
+      &:focus {
+        background-color: var(--error-900);
+      }
+    }
+  }
+</style>
