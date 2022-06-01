@@ -80,8 +80,9 @@ import Modal from '../components/Modal.astro'
 
 <script>
   // variables
-  let score = localStorage.getItem('score')
-  const scoreDisplay = document.querySelector('.score span:last-child')
+  let playerScore = localStorage.getItem('player-score')
+  let computerScore = localStorage.getItem('computer-score')
+  const scoreDisplays = [...document.querySelectorAll('[class*="score__"] span:last-child')]
   const chooseAttributeScreen = document.querySelector('.choose-attribute')
   const gameSelection = document.querySelector('ul')
   const allAttributes = [...gameSelection.querySelectorAll('span[class*="attribute-"]')]
@@ -93,6 +94,8 @@ import Modal from '../components/Modal.astro'
   const resetScoreButton = document.getElementById('reset-game')
   const h1 = document.querySelector('h1')
 
+  console.log(scoreDisplays)
+
   // functions
   const getRandomItem = items => Math.floor(Math.random() * items.length)
   
@@ -102,7 +105,7 @@ import Modal from '../components/Modal.astro'
     </span>`
   }
 
-  const resetGame = () => {
+  const newRound = () => {
     chooseAttributeScreen.classList.add('visible')
     chooseAttributeScreen.classList.remove('hidden')
     gameResultsScreen.classList.add('hidden')
@@ -126,32 +129,47 @@ import Modal from '../components/Modal.astro'
   }
 
   const playerWins = () => {
-    let currentScore = parseInt(localStorage.getItem('score'))
+    let currentScore = parseInt(localStorage.getItem('player-score'))
     let newScore
 
     playerChoiceDisplay.classList.add('winner')
     computerChoiceDisplay.classList.add('loser')
     gameResultAnnouncement.textContent = 'You win'
     newScore = currentScore + 1
-    localStorage.setItem('score', `${newScore}`)
+    localStorage.setItem('player-score', `${newScore}`)
     
     setTimeout(() => {
-      scoreDisplay.innerHTML = localStorage.getItem('score')
+      scoreDisplays[0].innerHTML = localStorage.getItem('player-score')
     }, 1500)
   }
 
   const computerWins = () => {
+    let currentScore = parseInt(localStorage.getItem('computer-score'))
+    let newScore
+
     playerChoiceDisplay.classList.add('loser')
     computerChoiceDisplay.classList.add('winner')
     gameResultAnnouncement.textContent = 'You lose'
+
+    newScore = currentScore + 1
+    localStorage.setItem('computer-score', `${newScore}`)
+    
+    setTimeout(() => {
+      scoreDisplays[1].innerHTML = localStorage.getItem('computer-score')
+    }, 1500)
   }
 
   // execution
-  if (score === null) {
-    score = localStorage.setItem('score', 0)
+  if (playerScore === null) {
+    playerScore = localStorage.setItem('player-score', 0)
   }
 
-  scoreDisplay.innerHTML = localStorage.getItem('score')
+  if (computerScore === null) {
+    computerScore = localStorage.setItem('computer-score', 0)
+  }
+
+  scoreDisplays[0].innerHTML = localStorage.getItem('player-score')
+  scoreDisplays[1].innerHTML = localStorage.getItem('computer-score')
 
   gameSelection.addEventListener('click', event => {
     if (!event.target.closest('button')) return
@@ -209,11 +227,13 @@ import Modal from '../components/Modal.astro'
     }, 1500)
   })
 
-  playAgainButton.addEventListener('click', resetGame)
+  playAgainButton.addEventListener('click', newRound)
 
   resetScoreButton.addEventListener('click', () => {
-    localStorage.setItem('score', 0)
-    scoreDisplay.innerHTML = localStorage.getItem('score')
+    localStorage.setItem('player-score', 0)
+    localStorage.setItem('computer-score', 0)
+    scoreDisplays[0].innerHTML = localStorage.getItem('player-score')
+    scoreDisplays[1].innerHTML = localStorage.getItem('computer-score')
     closeModal()
   })
 </script>
@@ -221,7 +241,6 @@ import Modal from '../components/Modal.astro'
 <style lang="scss">
   @use '../assets/scss/base/breakpoint' as *;
   @use '../assets/scss/base/size' as *;
-  @use '../assets/scss/base/keyframes/fade-in' as *;
 
   .container {
     display: flex;
@@ -254,12 +273,12 @@ import Modal from '../components/Modal.astro'
   .choose-attribute {
     display: grid;
     place-items: center;
-    width: 100%;
     background-image: url('/bg-pentagon.svg');
     background-repeat: no-repeat;
     background-position: center;
 
     @include breakpoint(700) {
+      width: 100%;
       background-size: 411px;
     }
 
@@ -275,7 +294,7 @@ import Modal from '../components/Modal.astro'
 
       &.animate button {
         opacity: 0;
-        animation: fade-in 0.5s ease-in-out forwards;
+        animation: scale-and-fade 0.3s ease-in-out forwards;
       }
 
       li {
@@ -296,34 +315,18 @@ import Modal from '../components/Modal.astro'
 
       li:nth-child(2) {
         inset: 60px -30px auto auto;
-
-        button {
-          animation-delay: 0.15s;
-        }
       }
 
       li:nth-child(3) {
         inset: 230px 10px auto auto;
-
-        button {
-          animation-delay: 0.3s;
-        }
       }
 
       li:nth-child(4) {
         inset: 230px auto auto 10px;
-
-        button {
-          animation-delay: 0.45s;
-        }
       }
 
       li:nth-child(5) {
         inset: 60px auto auto -30px;
-
-        button {
-          animation-delay: 0.6s;
-        }
       }
 
       @include breakpoint(700) {
@@ -386,8 +389,14 @@ import Modal from '../components/Modal.astro'
 
   button#rules,
   button#reset {
-    padding: 0.75rem 2.5rem;
+    padding: 0.5rem 1.5rem;
     border: 2px solid var(--header-outline);
+    @include size-12;
+
+    @include breakpoint(700) {
+      padding: 0.75rem 2.5rem;
+      @include size-16;
+    }
 
     &:hover,
     &:focus {
@@ -399,10 +408,11 @@ import Modal from '../components/Modal.astro'
   .button-group {
     display: flex;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 5rem;
 
     @include breakpoint(700) {
       align-self: end;
+      margin-top: 2rem;
     }
   }
 
@@ -538,7 +548,11 @@ import Modal from '../components/Modal.astro'
     color: var(--neutral-800);
     background-color: var(--neutral-400);
     transition: all 0.15s ease-in-out;
-    @include size-18;
+    @include size-14;
+
+    @include breakpoint(700) {
+      @include size-18;
+    }
 
     &:hover,
     &:focus {
@@ -555,6 +569,18 @@ import Modal from '../components/Modal.astro'
       &:focus {
         background-color: var(--error-900);
       }
+    }
+  }
+
+  @keyframes scale-and-fade {
+    0% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+    
+    100% {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 </style>
