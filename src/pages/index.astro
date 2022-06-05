@@ -41,17 +41,17 @@ import Modal from '../components/Modal.astro'
         </li>
       </ul>
     </div>
-    <div class="game-results hidden">
+    <div class="game-results hidden" tabindex="-1">
       <div class="game-results__player">
         <div class="player__choice"></div>
-        <p>You picked <span class="sr-only">scissors</span></p> 
+        <p>You picked <span class="sr-only">&nbsp;</span></p> 
       </div> 
       <div class="game-results__computer">
         <div class="computer__choice"></div>
-        <p>The house picked <span class="sr-only">scissors</span></p> 
+        <p>The house picked <span class="sr-only">&nbsp;</span></p> 
       </div>
       <div class="game-results__conclusion">
-        <p class="size-48" data-animation="blink">You win</p>
+        <p class="size-48">&nbsp;</p>
         <button id="play-again" class="user-action">Play again</button>
       </div>
     </div>
@@ -93,8 +93,6 @@ import Modal from '../components/Modal.astro'
   const playAgainButton = document.getElementById('play-again')
   const resetScoreButton = document.getElementById('reset-game')
   const h1 = document.querySelector('h1')
-
-  console.log(scoreDisplays)
 
   // functions
   const getRandomItem = items => Math.floor(Math.random() * items.length)
@@ -177,8 +175,11 @@ import Modal from '../components/Modal.astro'
     const currentTarget = event.target
     const playersChoice = currentTarget.querySelector('span:last-child').getAttribute('data-type')
     const computersChoice = allAttributes[getRandomItem(allAttributes)].getAttribute('data-type')
+    const playerChoiceScreenReader = document.querySelector('.game-results__player p span')
+    const computerChoiceScreenReader = document.querySelector('.game-results__computer p span')
 
     gameSelection.classList.remove('animate')
+    gameResultsScreen.focus()
 
     chooseAttributeScreen.classList.remove('visible')
     chooseAttributeScreen.classList.add('hidden')
@@ -211,6 +212,9 @@ import Modal from '../components/Modal.astro'
 
     playerChoiceDisplay.innerHTML = createAttribute(playersChoice)
     computerChoiceDisplay.innerHTML = createAttribute(computersChoice)
+    console.log(playerChoiceScreenReader, playersChoice)
+    playerChoiceScreenReader.textContent = playersChoice
+    computerChoiceScreenReader.textContent = computersChoice
 
     setTimeout(() => { 
       playerChoiceDisplay.firstElementChild.style.opacity = '1' 
