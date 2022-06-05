@@ -38,7 +38,7 @@ As an extra challenge I will do the following things:
 
 ### Screenshot
 
-
+![social-preview-image](https://user-images.githubusercontent.com/3909046/172068130-dd1929d4-d8de-4f79-8447-aa36ebdb2170.png)
 
 ### Links
 
