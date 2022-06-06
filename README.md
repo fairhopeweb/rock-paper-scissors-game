@@ -163,7 +163,7 @@ As an extra challenge I will do the following things:
 
 ### Continued development
 
-- I used fixed widths and heights to achieve the buttons on the pentagon background. I was thinking about using CSS Grid, but didn't know how to get it right. I'm curious about how other solutions tackled  it and I might try it out if I find a there's a better way.
+- I used fixed widths and heights to achieve the buttons on the pentagon background. I was thinking about using CSS Grid, but didn't know how to get it right. I'm curious about how other solutions tackled it and I might try it out if there's a better way.
 - My `playerWins()` and `computerWins()` functions could probably be refactored to one function using some if-statements, as it has a lot of the same code. So I might change this in the future.
 
 ### Useful resources
