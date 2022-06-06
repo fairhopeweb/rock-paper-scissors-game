@@ -546,7 +546,7 @@ import Modal from '../components/Modal.astro'
     @include size-20;
   }
 
-  :global(.modal__content button:not(#close)) {
+  :global(.modal__content button:not([data-close-modal])) {
     padding: 0.75rem 2rem;
     border-radius: 0.5rem;
     color: var(--neutral-800);
