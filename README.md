@@ -167,6 +167,8 @@ As an extra challenge I will do the following things:
 - My `playerWins()` and `computerWins()` functions could probably be refactored to one function using some if-statements, as it has a lot of the same code. So I might change this in the future.
 - Some kind of global leaderboard where users can see each others scores (idea credits: https://github.com/rebelchris).
 - The responsive design could be enhanced a bit as well. I used a small and a large breakpoint, but it could definitely improve by using a medium breakpoint as well.
+- There should be better screenreader feedback after making a choice, eihter by adding a `role="status"` or by resetting the focus.
+- Improving accessibility by adding better text alternatives to "You picked", "The house picked" and "You lose".
 
 ### Useful resources
 
